@@ -1,4 +1,5 @@
 import { Section, SectionHeading } from './Section'
+import { FaqItem } from './FaqItem'
 import { prisEksMva, prisInkMva, NESTE_TREFF } from '@/lib/config'
 
 // Servering (kaffe/frokost fra kl. 08.00) er ikke avklart, og er derfor bevisst
@@ -36,17 +37,7 @@ export function Faq() {
       <SectionHeading eyebrow="Ofte stilte spørsmål" title="Godt å vite" />
       <div className="mx-auto mt-10 max-w-dm-narrow divide-y divide-black/10 rounded-dm bg-white px-6 shadow-dm">
         {sporsmaal.map((s) => (
-          <details key={s.q} className="group py-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-dm-h5 font-bold text-dm-heading">
-              {s.q}
-              <span className="flex-none text-dm-primaryLight transition group-open:rotate-45" aria-hidden>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-                </svg>
-              </span>
-            </summary>
-            <p className="mt-3 text-dm-text">{s.a}</p>
-          </details>
+          <FaqItem key={s.q} q={s.q} a={s.a} />
         ))}
       </div>
     </Section>
