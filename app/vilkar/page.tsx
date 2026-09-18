@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { PageShell, Prose } from '@/components/PageShell'
 import {
-  EVENT,
+  hentAktivtTreff,
   prisEksMva,
   prisInkMva,
   DRMULIG,
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 }
 
 export default function VilkarPage() {
+  const EVENT = hentAktivtTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)

@@ -1,6 +1,6 @@
 import { Section, SectionHeading } from './Section'
 import { Reveal } from './Reveal'
-import { EVENT } from '@/lib/config'
+import { KAPASITET } from '@/lib/config'
 
 // "SpeedMeeting i tall" fra referansen. Fire nokkeltall paa moerk petrol,
 // store Cormorant-tall i signalgult.
@@ -8,7 +8,7 @@ const tall = [
   { verdi: '21', tekst: 'bedrifter du kan møte' },
   { verdi: '3+3', tekst: 'minutter pitch per møte' },
   { verdi: '1', tekst: 'minutt til oppsummering' },
-  { verdi: String(EVENT.capacity), tekst: 'plasser – maks' },
+  { verdi: String(KAPASITET), tekst: 'plasser – maks' },
 ]
 
 export function Numbers() {
