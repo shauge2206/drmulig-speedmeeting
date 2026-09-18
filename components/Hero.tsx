@@ -71,7 +71,7 @@ export function Hero() {
             {piller.map((p) => (
               <span
                 key={p}
-                className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur"
+                className="dm-pill cursor-default rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-dm-accent hover:bg-white/20 hover:text-white hover:shadow-[0_8px_22px_-8px_rgba(0,0,0,0.55)]"
               >
                 {p}
               </span>
