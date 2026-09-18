@@ -1,7 +1,7 @@
 // Siden spoer denne for aa vite hvor mange plasser som er igjen.
 // Leser kun et tall og et flagg fra Redis. Se 05-LITE-VERSJON.md.
 import { Redis } from '@upstash/redis'
-import { EVENT } from '@/lib/config'
+import { hentAktivtTreff, KAPASITET, UTSOLGT_MANUELL } from '@/lib/config'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -9,8 +9,9 @@ export const dynamic = 'force-dynamic'
 const redis = Redis.fromEnv()
 
 export async function GET() {
-  const slug = process.env.TREFF_SLUG ?? EVENT.slug
-  const kapasitet = Number(process.env.KAPASITET ?? EVENT.capacity)
+  // Slug foelger aktivt treff, saa teller-noeklene ruller med til neste treff.
+  const slug = process.env.TREFF_SLUG ?? hentAktivtTreff().slug
+  const kapasitet = Number(process.env.KAPASITET ?? KAPASITET)
 
   const [flagg, solgt] = await Promise.all([
     redis.get<string>(`utsolgt:${slug}`),
@@ -20,7 +21,7 @@ export async function GET() {
 
   return Response.json(
     {
-      utsolgt: flagg === '1' || antall >= kapasitet || EVENT.utsolgt_manuell,
+      utsolgt: flagg === '1' || antall >= kapasitet || UTSOLGT_MANUELL,
       solgt: antall,
       igjen: Math.max(0, kapasitet - antall),
     },

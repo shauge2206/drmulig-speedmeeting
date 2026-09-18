@@ -1,6 +1,6 @@
 'use client'
 
-import { EVENT, NESTE_TREFF } from '@/lib/config'
+import { STRIPE_URL, hentKommendeTreff } from '@/lib/config'
 import { useStatus } from './StatusProvider'
 
 // KJØP PLASS-knappen. Peker rett på Stripe Payment Link.
@@ -17,7 +17,7 @@ export function KjopKnapp({
   const { utsolgt, lastet } = useStatus()
 
   if (lastet && utsolgt) {
-    const neste = NESTE_TREFF[0]
+    const neste = hentKommendeTreff()[0]
     return (
       <span className={`inline-flex flex-col items-start gap-2 ${className}`}>
         <span className="dm-btn" aria-disabled="true">
@@ -39,7 +39,7 @@ export function KjopKnapp({
   return (
     <a
       className={`dm-btn ${className}`}
-      href={EVENT.stripe_payment_link_url}
+      href={STRIPE_URL}
       target="_blank"
       rel="noopener noreferrer"
     >

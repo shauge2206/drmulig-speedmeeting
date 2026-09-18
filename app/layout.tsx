@@ -3,13 +3,17 @@ import { Cormorant, Work_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import {
-  EVENT,
+  hentAktivtTreff,
   UAVKLART,
   DRMULIG,
   prisEksMva,
   formaterDato,
   formaterKlokke,
 } from '@/lib/config'
+
+// Revalider jevnlig, slik at aktivt treff ruller videre av seg selv kort tid
+// etter at et treff er ferdig (uten ny deploy). Gjelder alle sider i treet.
+export const revalidate = 3600
 
 const cormorant = Cormorant({
   subsets: ['latin'],
@@ -24,33 +28,41 @@ const workSans = Work_Sans({
   display: 'swap',
 })
 
-const beskrivelse = `Speed-dating for bedrifter på Regus Kokstad i Bergen. Du møter opptil 21 bedrifter én og én, pitcher 3 minutter hver vei og bytter til neste. ${formaterDato(
-  EVENT.starts_at,
-)} kl. ${formaterKlokke(EVENT.starts_at)}. Faglig innslag fra Arild Pedersen og deltakerliste i etterkant. ${EVENT.capacity} plasser, ${prisEksMva} kr eks. mva.`
+function lagBeskrivelse(EVENT: ReturnType<typeof hentAktivtTreff>): string {
+  return `Speed-dating for bedrifter på Regus Kokstad i Bergen. Du møter opptil 21 bedrifter én og én, pitcher 3 minutter hver vei og bytter til neste. ${formaterDato(
+    EVENT.starts_at,
+  )} kl. ${formaterKlokke(EVENT.starts_at)}. Faglig innslag fra Arild Pedersen og deltakerliste i etterkant. ${EVENT.capacity} plasser, ${prisEksMva} kr eks. mva.`
+}
 
-export const metadata: Metadata = {
-  // TODO: bytt til ekte domene naar det er klart (UAVKLART.domene).
-  metadataBase: new URL(UAVKLART.domene),
-  title: 'DrMulig SpeedMeeting - nettverkstreff i Bergen',
-  description: beskrivelse,
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const EVENT = hentAktivtTreff()
+  const beskrivelse = lagBeskrivelse(EVENT)
+
+  return {
+    // TODO: bytt til ekte domene naar det er klart (UAVKLART.domene).
+    metadataBase: new URL(UAVKLART.domene),
     title: 'DrMulig SpeedMeeting - nettverkstreff i Bergen',
     description: beskrivelse,
-    type: 'website',
-    locale: 'nb_NO',
-    images: [{ url: '/img/og.png', width: 1200, height: 630 }],
-  },
-  robots: { index: true, follow: true },
-  icons: { icon: '/img/logoer/favicon.png' },
+    openGraph: {
+      title: 'DrMulig SpeedMeeting - nettverkstreff i Bergen',
+      description: beskrivelse,
+      type: 'website',
+      locale: 'nb_NO',
+      images: [{ url: '/img/og.png', width: 1200, height: 630 }],
+    },
+    robots: { index: true, follow: true },
+    icons: { icon: '/img/logoer/favicon.png' },
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const EVENT = hentAktivtTreff()
   // JSON-LD av typen Event. Hjelper Google aa forstaa arrangementet.
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BusinessEvent',
     name: 'DrMulig SpeedMeeting',
-    description: beskrivelse,
+    description: lagBeskrivelse(EVENT),
     startDate: EVENT.starts_at,
     endDate: EVENT.ends_at,
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',

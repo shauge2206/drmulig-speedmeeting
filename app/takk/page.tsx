@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PageShell, Prose } from '@/components/PageShell'
-import { EVENT, formaterDato, formaterKlokke, DRMULIG } from '@/lib/config'
+import { hentAktivtTreff, formaterDato, formaterKlokke, DRMULIG } from '@/lib/config'
 
 export const metadata: Metadata = {
   title: 'Takk for påmeldingen - DrMulig SpeedMeeting',
@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default function TakkPage() {
+  const EVENT = hentAktivtTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)

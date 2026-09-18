@@ -3,7 +3,7 @@ import { Reveal } from './Reveal'
 import { KjopKnapp } from './status/KjopKnapp'
 import { PlasserIgjen } from './status/PlasserIgjen'
 import {
-  EVENT,
+  hentAktivtTreff,
   prisEksMva,
   prisInkMva,
   formaterDato,
@@ -18,6 +18,7 @@ const inkludert = [
 ]
 
 export function Pricing() {
+  const EVENT = hentAktivtTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)

@@ -1,11 +1,12 @@
 import Image from 'next/image'
-import { EVENT, formaterDato, formaterKlokke, prisEksMva } from '@/lib/config'
+import { hentAktivtTreff, formaterDato, formaterKlokke, prisEksMva } from '@/lib/config'
 import { KjopKnapp } from './status/KjopKnapp'
 
 // Fullbredde bakgrunnsbilde fra treffet, moerkt petrol-overlegg og stor
 // Cormorant-H1. To kall til handling og en rad med korte fakta-piller,
 // slik referansen viser. Ken-burns paa bildet og fade-up paa teksten beholdes.
 export function Hero() {
+  const EVENT = hentAktivtTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)

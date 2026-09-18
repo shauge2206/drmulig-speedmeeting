@@ -1,6 +1,6 @@
 'use client'
 
-import { EVENT } from '@/lib/config'
+import { KAPASITET } from '@/lib/config'
 import { useStatus } from './StatusProvider'
 
 // Viser plasser igjen KUN når det er under ti. "23 plasser igjen" selger
@@ -10,7 +10,7 @@ import { useStatus } from './StatusProvider'
 export function PlasserIgjen({ className = '' }: { className?: string }) {
   const { igjen, utsolgt, lastet } = useStatus()
 
-  let tekst = `${EVENT.capacity} plasser per treff`
+  let tekst = `${KAPASITET} plasser per treff`
   if (lastet && utsolgt) tekst = 'Fulltegnet for denne gang'
   else if (lastet && igjen > 0 && igjen <= 10)
     tekst = igjen === 1 ? 'Siste plass igjen' : `${igjen} plasser igjen`

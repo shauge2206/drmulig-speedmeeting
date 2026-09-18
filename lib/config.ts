@@ -1,11 +1,13 @@
 // Sentral konfigurasjon for DrMulig SpeedMeeting.
 //
-// ALT som endres per treff ligger her. En vanlig maaned: bytt dato, pris og
-// Stripe-lenke, commit og push. Vercel bygger automatisk. Se OPPSETT.md.
+// Alt som er LIKT for hvert treff ligger i TREFF_MAL (sted, tid, pris, kapasitet,
+// Stripe-lenke). Selve DATOENE ligger i TREFF_DATOER. Siden viser automatisk det
+// foerste treffet som ikke er ferdig ennaa, og ruller videre til neste naar
+// datoen er passert. Ny maaned: legg til en dato i TREFF_DATOER, commit og push.
 //
-// Feltnavnene under speiler `events`-tabellen i 06-AVANSERT-VERSJON.md, slik at
-// en senere oppgradering til database blir billig. Komponentene vet ikke hvor
-// dataene kommer fra, de leser bare fra EVENT.
+// Komponentene henter aktivt treff med hentAktivtTreff() ved render, og sidene
+// revalideres jevnlig (se `revalidate` i app/layout.tsx), slik at overgangen
+// skjer av seg selv kort tid etter at et treff er ferdig.
 
 export type Treff = {
   // Speiler events-tabellen
@@ -25,7 +27,6 @@ export type Treff = {
   stripe_payment_link_id: string // plink_..., speiler PAYMENT_LINK_ID
 
   // Manuell reservebryter. Overstyrer alt. Se 05-LITE-VERSJON.md.
-  // Settes til true hvis en webhook gaar tapt og treffet likevel er fullt.
   utsolgt_manuell: boolean
 
   // Paameldingsfrist. Siden stenger ogsaa paa dato, ikke bare paa antall.
@@ -33,37 +34,111 @@ export type Treff = {
 }
 
 // ---------------------------------------------------------------------------
-// INNEVAERENDE TREFF
+// FELLES FOR ALLE TREFF (endres sjelden)
 // ---------------------------------------------------------------------------
-export const EVENT: Treff = {
-  slug: '2026-11-19',
-  title: 'DrMulig SpeedMeeting 19. november 2026',
-  starts_at: '2026-11-19T09:00:00+01:00',
-  ends_at: '2026-11-19T12:00:00+01:00',
+const TREFF_MAL = {
   venue: 'Regus Kokstad, Stjernebygget',
   // TODO (Stian): bekreft eksakt gateadresse/postnr for Regus Kokstad.
   address: 'Regus Kokstad, Stjernebygget, Kokstad i Bergen',
   capacity: 30,
   price_ore: 49500, // 495 kr eks. mva
   vat_rate: 0.25,
-  status: 'published',
-
+  status: 'published' as const,
   // TODO (Stian/Arild): lim inn den ekte Payment Link-URL-en fra Stripe.
   stripe_payment_link_url: 'https://buy.stripe.com/TODO_PAYMENT_LINK',
-  // TODO: samme lenkes plink_-id. Ogsaa satt som PAYMENT_LINK_ID i Vercel.
   stripe_payment_link_id: 'plink_TODO',
-
   utsolgt_manuell: false,
-  registration_deadline: '2026-11-19T08:00:00+01:00',
+  startKlokke: '09:00', // lokal tid (Oslo), samme for alle treff
+  sluttKlokke: '12:00',
 }
 
 // ---------------------------------------------------------------------------
-// KOMMENDE TREFF (vises som "neste treff" naar dette er fullt)
+// KOMMENDE TREFF - legg til nye datoer nederst. Format: 'YYYY-MM-DD'.
+// Datoer som er passert kan bli staaende; de filtreres bort automatisk.
 // ---------------------------------------------------------------------------
-export const NESTE_TREFF = [
-  { dato: '10. desember 2026', slug: '2026-12-10' },
-  { dato: '14. januar 2027', slug: '2027-01-14' },
+export const TREFF_DATOER = [
+  '2026-11-19',
+  '2026-12-10',
+  '2027-01-14',
 ]
+
+// ---------------------------------------------------------------------------
+// Felles verdier som klientkomponenter og API leser direkte
+// ---------------------------------------------------------------------------
+export const KAPASITET = TREFF_MAL.capacity
+export const STRIPE_URL = TREFF_MAL.stripe_payment_link_url
+export const UTSOLGT_MANUELL = TREFF_MAL.utsolgt_manuell
+export const prisEksMva = Math.round(TREFF_MAL.price_ore / 100)
+export const prisInkMva = Math.round(
+  (TREFF_MAL.price_ore * (1 + TREFF_MAL.vat_rate)) / 100,
+)
+
+// ---------------------------------------------------------------------------
+// Aktivt og kommende treff (beregnes ved render)
+// ---------------------------------------------------------------------------
+
+// Riktig tidssone-offset for Oslo paa en gitt dato (+01:00 vinter, +02:00 sommer).
+function osloOffset(dato: string): string {
+  const d = new Date(`${dato}T12:00:00Z`)
+  const navn =
+    new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Europe/Oslo',
+      timeZoneName: 'shortOffset',
+    })
+      .formatToParts(d)
+      .find((p) => p.type === 'timeZoneName')?.value ?? 'GMT+1'
+  const timer = Math.abs(parseInt(navn.replace(/[^0-9+-]/g, ''), 10)) || 1
+  return `+0${timer}:00`
+}
+
+// Bygg et fullstendig Treff fra en dato + felles mal.
+function byggTreff(dato: string): Treff {
+  const off = osloOffset(dato)
+  const startIso = `${dato}T${TREFF_MAL.startKlokke}:00${off}`
+  const sluttIso = `${dato}T${TREFF_MAL.sluttKlokke}:00${off}`
+  return {
+    slug: dato,
+    title: `DrMulig SpeedMeeting ${formaterDato(startIso)}`,
+    starts_at: startIso,
+    ends_at: sluttIso,
+    venue: TREFF_MAL.venue,
+    address: TREFF_MAL.address,
+    capacity: TREFF_MAL.capacity,
+    price_ore: TREFF_MAL.price_ore,
+    vat_rate: TREFF_MAL.vat_rate,
+    status: TREFF_MAL.status,
+    stripe_payment_link_url: TREFF_MAL.stripe_payment_link_url,
+    stripe_payment_link_id: TREFF_MAL.stripe_payment_link_id,
+    utsolgt_manuell: TREFF_MAL.utsolgt_manuell,
+    registration_deadline: startIso,
+  }
+}
+
+function sorterteDatoer(): string[] {
+  return [...TREFF_DATOER].sort()
+}
+
+// Det aktive treffet: foerste dato der sluttidspunktet ikke er passert. Naar
+// alle er passert, vises det siste, slik at siden aldri staar uten et treff.
+export function hentAktivtTreff(naa: Date = new Date()): Treff {
+  const naaMs = naa.getTime()
+  const datoer = sorterteDatoer()
+  const kommende = datoer.find(
+    (d) => new Date(byggTreff(d).ends_at).getTime() > naaMs,
+  )
+  const valgt = kommende ?? datoer[datoer.length - 1] ?? TREFF_DATOER[0]
+  return byggTreff(valgt)
+}
+
+// Treff ETTER det aktive, til "neste treff"-melding naar noe er fullt.
+export function hentKommendeTreff(
+  naa: Date = new Date(),
+): { dato: string; slug: string }[] {
+  const aktiv = hentAktivtTreff(naa)
+  return sorterteDatoer()
+    .filter((d) => d > aktiv.slug)
+    .map((d) => ({ dato: formaterDato(byggTreff(d).starts_at), slug: d }))
+}
 
 // ---------------------------------------------------------------------------
 // UAVKLART - tydelige plassholdere, ikke oppdiktede verdier
@@ -71,9 +146,6 @@ export const NESTE_TREFF = [
 export const UAVKLART = {
   // TODO (Stian): domenet er ikke bestemt. Byttes overalt naar det er klart.
   domene: 'https://TODO-domene.no',
-  // TODO (Arild): er det servering (kaffe/frokost) fra kl. 08.00? Ja/nei
-  // avgjoer om vi skriver det i punktlisten eller sier eksplisitt at det
-  // ikke serveres. Inntil videre naevnes servering ikke paa siden.
   serveringAvklart: false,
 }
 
@@ -99,12 +171,10 @@ export const DRMULIG = {
 }
 
 // ---------------------------------------------------------------------------
-// Avledede hjelpere
+// Datohjelpere
 // ---------------------------------------------------------------------------
-export const prisEksMva = Math.round(EVENT.price_ore / 100)
-export const prisInkMva = Math.round((EVENT.price_ore * (1 + EVENT.vat_rate)) / 100)
 
-// "tirsdag 6. oktober 2026"
+// "torsdag 19. november 2026"
 export function formaterDato(iso: string): string {
   return new Intl.DateTimeFormat('nb-NO', {
     weekday: 'long',
@@ -115,7 +185,7 @@ export function formaterDato(iso: string): string {
   }).format(new Date(iso))
 }
 
-// "08.00"
+// "09.00"
 export function formaterKlokke(iso: string): string {
   return new Intl.DateTimeFormat('nb-NO', {
     hour: '2-digit',

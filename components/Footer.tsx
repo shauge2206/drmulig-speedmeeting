@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { DRMULIG, EVENT } from '@/lib/config'
+import { DRMULIG, hentAktivtTreff } from '@/lib/config'
 
 export function Footer() {
+  const EVENT = hentAktivtTreff()
   return (
     <footer className="bg-[#182b38] text-white/80">
       <div className="mx-auto grid w-full max-w-dm gap-10 px-5 py-14 md:grid-cols-3 md:px-8">

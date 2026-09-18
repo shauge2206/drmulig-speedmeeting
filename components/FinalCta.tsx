@@ -2,9 +2,10 @@ import { Section } from './Section'
 import { Reveal } from './Reveal'
 import { KjopKnapp } from './status/KjopKnapp'
 import { PlasserIgjen } from './status/PlasserIgjen'
-import { EVENT, formaterDato, formaterKlokke } from '@/lib/config'
+import { hentAktivtTreff, formaterDato, formaterKlokke } from '@/lib/config'
 
 export function FinalCta() {
+  const EVENT = hentAktivtTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)
