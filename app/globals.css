@@ -174,37 +174,6 @@
   animation: dm-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Piler som reiser fra boksen lengst til venstre mot hoyre langs toppen av
-   stegraden (Slik fungerer). Tre piler flyter i loop, forskjoevet i tid, kun
-   naar et av kortene er mouseover. Se components/HowItWorks.tsx. */
-.dm-travel-arrow {
-  position: absolute;
-  top: 50%;
-  left: -6%;
-  transform: translateY(-50%);
-  opacity: 0;
-  color: var(--dm-primary-light);
-}
-.dm-steps-wrap:has(.dm-step:hover) .dm-travel-arrow {
-  animation: dm-arrow-travel 2.2s linear infinite;
-}
-@keyframes dm-arrow-travel {
-  0% {
-    left: -6%;
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  88% {
-    opacity: 1;
-  }
-  100% {
-    left: 104%;
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .dm-reveal,
   .dm-reveal-in {
@@ -224,10 +193,5 @@
   .dm-btn:hover,
   .dm-pill:hover {
     transform: none;
-  }
-  /* Ingen flytende piler ved redusert bevegelse */
-  .dm-travel-arrow {
-    animation: none;
-    opacity: 0;
   }
 }
