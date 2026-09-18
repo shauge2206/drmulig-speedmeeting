@@ -17,8 +17,8 @@ export function Footer() {
             style={{ borderRadius: 0 }}
           />
           <p className="mt-4 max-w-xs text-sm">
-            SpeedMeeting er et månedlig nettverkstreff der bedrifter møter bedrifter. Vert
-            er {DRMULIG.vert}.
+            SpeedMeeting er et nettverkstreff der bedrifter møter bedrifter. Vert er{' '}
+            {DRMULIG.vert}.
           </p>
         </div>
 

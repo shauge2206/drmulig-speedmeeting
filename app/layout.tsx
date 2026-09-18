@@ -24,7 +24,7 @@ const workSans = Work_Sans({
   display: 'swap',
 })
 
-const beskrivelse = `Speed-dating for bedrifter i Bergen. Du møter inntil 29 bedrifter én og én, 2,5 minutter hver vei, så bytter dere. ${formaterDato(
+const beskrivelse = `Speed-dating for bedrifter på Regus Kokstad i Bergen. Du møter opptil 21 bedrifter én og én, pitcher 3 minutter hver vei og bytter til neste. ${formaterDato(
   EVENT.starts_at,
 )} kl. ${formaterKlokke(EVENT.starts_at)}. Faglig innslag fra Arild Pedersen og deltakerliste i etterkant. ${EVENT.capacity} plasser, ${prisEksMva} kr eks. mva.`
 
@@ -60,9 +60,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       name: EVENT.venue,
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Lars Hilles gate 30',
-        postalCode: '5008',
-        addressLocality: 'Bergen',
+        // TODO (Stian): bekreft eksakt gateadresse/postnr for Regus Kokstad.
+        streetAddress: 'Regus Kokstad, Stjernebygget',
+        postalCode: '5257',
+        addressLocality: 'Kokstad, Bergen',
         addressCountry: 'NO',
       },
     },

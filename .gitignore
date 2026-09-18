@@ -35,3 +35,6 @@ next-env.d.ts
 
 # videoer skal ikke inn i repoet (05-LITE-VERSJON.md)
 *.mp4
+
+# designreferanse (stor enkeltfil-HTML med innebygde bilder), ikke del av siden
+referanse/

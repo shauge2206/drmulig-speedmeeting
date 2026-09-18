@@ -36,12 +36,13 @@ export type Treff = {
 // INNEVAERENDE TREFF
 // ---------------------------------------------------------------------------
 export const EVENT: Treff = {
-  slug: '2026-10-06',
-  title: 'DrMulig SpeedMeeting 6. oktober 2026',
-  starts_at: '2026-10-06T08:00:00+02:00',
-  ends_at: '2026-10-06T10:00:00+02:00',
-  venue: 'DrMulig',
-  address: 'Lars Hilles gate 30, 5008 Bergen',
+  slug: '2026-11-19',
+  title: 'DrMulig SpeedMeeting 19. november 2026',
+  starts_at: '2026-11-19T09:00:00+01:00',
+  ends_at: '2026-11-19T12:00:00+01:00',
+  venue: 'Regus Kokstad, Stjernebygget',
+  // TODO (Stian): bekreft eksakt gateadresse/postnr for Regus Kokstad.
+  address: 'Regus Kokstad, Stjernebygget, Kokstad i Bergen',
   capacity: 30,
   price_ore: 49500, // 495 kr eks. mva
   vat_rate: 0.25,
@@ -53,15 +54,15 @@ export const EVENT: Treff = {
   stripe_payment_link_id: 'plink_TODO',
 
   utsolgt_manuell: false,
-  registration_deadline: '2026-10-06T07:00:00+02:00',
+  registration_deadline: '2026-11-19T08:00:00+01:00',
 }
 
 // ---------------------------------------------------------------------------
 // KOMMENDE TREFF (vises som "neste treff" naar dette er fullt)
 // ---------------------------------------------------------------------------
 export const NESTE_TREFF = [
-  { dato: '3. november 2026', slug: '2026-11-03' },
-  { dato: '1. desember 2026', slug: '2026-12-01' },
+  { dato: '10. desember 2026', slug: '2026-12-10' },
+  { dato: '14. januar 2027', slug: '2027-01-14' },
 ]
 
 // ---------------------------------------------------------------------------

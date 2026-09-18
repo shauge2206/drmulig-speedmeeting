@@ -19,7 +19,7 @@ const logoer = [
 
 export function LogoStrip() {
   return (
-    <Section variant="white">
+    <Section variant="subtle">
       <p className="dm-eyebrow mb-8 text-center text-dm-primaryLight">
         Våre kunder og partnere
       </p>

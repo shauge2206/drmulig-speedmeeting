@@ -1,27 +1,34 @@
 import Image from 'next/image'
 import { EVENT, formaterDato, formaterKlokke, prisEksMva } from '@/lib/config'
 import { KjopKnapp } from './status/KjopKnapp'
-import { PlasserIgjen } from './status/PlasserIgjen'
 
-// Fullbredde bakgrunnsbilde av rundt 30 deltakere, mørkt petrol-overlegg,
-// stor Cormorant-H1 i hvitt. Ett tydelig kall til handling: KJØP PLASS.
+// Fullbredde bakgrunnsbilde fra treffet, moerkt petrol-overlegg og stor
+// Cormorant-H1. To kall til handling og en rad med korte fakta-piller,
+// slik referansen viser. Ken-burns paa bildet og fade-up paa teksten beholdes.
 export function Hero() {
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)
 
+  const piller = [
+    kapitaliser(dato),
+    `Kl. ${fra} til ${til}`,
+    EVENT.venue,
+    `Maks ${EVENT.capacity} plasser`,
+  ]
+
   return (
     <section className="relative isolate overflow-hidden bg-dm-primary text-white">
       <Image
-        src="/img/hero.jpg"
-        alt="Deltakere på et DrMulig SpeedMeeting i Bergen"
+        src="/img/sm/hero.jpg"
+        alt="Deltakere i parallelle SpeedMeeting-samtaler på Regus Kokstad"
         fill
         priority
         sizes="100vw"
         className="dm-kenburns object-cover"
         style={{ borderRadius: 0 }}
       />
-      {/* Flatt mørkt petrol-overlegg for lesbarhet (ingen gradient) */}
+      {/* Flatt mørkt petrol-overlegg for lesbarhet */}
       <div
         className="absolute inset-0 -z-0"
         style={{ backgroundColor: 'rgba(33,58,76,0.82)' }}
@@ -32,37 +39,50 @@ export function Hero() {
             className="dm-hero-in dm-eyebrow mb-4 text-dm-accent"
             style={{ animationDelay: '0.05s' }}
           >
-            Nettverkstreff i Bergen
+            Nettverkstreff i Bergen &bull; Regus Kokstad
           </p>
           <h1 className="dm-hero-in text-white" style={{ animationDelay: '0.15s' }}>
-            DrMulig SpeedMeeting
+            Speed-dating for bedrifter.
           </h1>
           <p
             className="dm-hero-in mt-5 max-w-2xl text-lg text-white/90 md:text-xl"
             style={{ animationDelay: '0.28s' }}
           >
-            Speed-dating for bedrifter. Du møter opptil 29 andre bedrifter én og én,
-            pitcher 2,5 minutter hver vei, og bytter til neste på lista. Mange møter og
-            mange inntrykk, på bare to timer.
+            Du møter opptil <strong className="font-semibold">21 bedrifter</strong>, én og
+            én. Dere pitcher <strong className="font-semibold">3 minutter hver vei</strong>,
+            bruker 1 minutt på oppsummering og går videre til neste møte. Møteaktivitet på
+            høy oktan.
           </p>
 
           <div
             className="dm-hero-in mt-8 flex flex-wrap items-center gap-4"
             style={{ animationDelay: '0.4s' }}
           >
-            <KjopKnapp />
-            <PlasserIgjen className="text-sm font-medium text-dm-accent" />
+            <KjopKnapp label={`Kjøp plass – ${prisEksMva} kr`} />
+            <a className="dm-btn-outline !border-white !text-white" href="#slik-fungerer">
+              Se hvordan det fungerer
+            </a>
           </div>
 
-          <p
-            className="dm-hero-in mt-6 text-base text-white/80"
+          <div
+            className="dm-hero-in mt-8 flex flex-wrap gap-3"
             style={{ animationDelay: '0.5s' }}
           >
-            {dato}, kl. {fra} til {til}. {EVENT.address}. {EVENT.capacity} plasser.{' '}
-            {prisEksMva} kr eks. mva.
-          </p>
+            {piller.map((p) => (
+              <span
+                key={p}
+                className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur"
+              >
+                {p}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )
+}
+
+function kapitaliser(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }

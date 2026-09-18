@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Section, SectionHeading } from './Section'
 import { Reveal } from './Reveal'
 
@@ -6,62 +5,53 @@ const steg = [
   {
     n: 1,
     tittel: 'Du møter opp',
-    tekst: 'Kl. 08.00 i Lars Hilles gate 30. Kaffe i hånden, og du får lista over hvem du skal møte.',
+    tekst:
+      'Kl. 09.00 hos Regus Kokstad i Stjernebygget. Du får oversikt over hvem du skal møte og hvordan runden foregår.',
   },
   {
     n: 2,
-    tittel: 'Du møter én bedrift av gangen',
-    tekst: 'Ansikt til ansikt, ikke foran en hel sal. Rolig nok til at dere faktisk får snakket sammen.',
+    tittel: 'Én bedrift av gangen',
+    tekst:
+      'Ansikt til ansikt rundt bordet. Ingen scene, ingen salgspresentasjon foran en hel sal.',
   },
   {
     n: 3,
-    tittel: 'Dere pitcher 2,5 minutter hver',
-    tekst: 'Du forteller kort om deg og bedriften din, de gjør det samme, så bytter dere til neste på lista.',
+    tittel: '3 minutter hver vei',
+    tekst:
+      'Du pitcher i tre minutter, den andre bedriften pitcher i tre minutter, og dere bruker ett minutt på kort oppsummering.',
   },
   {
     n: 4,
-    tittel: 'Du har møtt opptil 29 bedrifter',
-    tekst: 'På to timer. Deltakerlisten kommer i etterkant, så du kan følge opp de mest relevante.',
+    tittel: 'Videre til neste',
+    tekst:
+      'Du flytter deg videre etter planen og kan møte opptil 21 bedrifter i løpet av formiddagen.',
   },
 ]
 
 export function HowItWorks() {
   return (
-    <Section variant="white" id="slik-fungerer">
+    <Section variant="subtle" id="slik-fungerer">
       <SectionHeading
         eyebrow="Slik fungerer et treff"
-        title="Speed-dating, bedrift til bedrift"
-        intro="Ingen løs mingling. Du møter bedriftene én for én, på rekke, og rekker over hele rommet på to timer."
+        title="Mange riktige møter på én formiddag."
+        intro="Ingen tilfeldig mingling. Du vet at du skal møte folk, og du rekker faktisk å snakke med dem. Kort, strukturert og effektivt."
       />
 
-      <div className="mt-12 grid items-center gap-10 lg:grid-cols-2">
-        <ol className="space-y-6">
-          {steg.map((s, i) => (
-            <Reveal key={s.n} as="li" delay={i * 90} className="group flex gap-4">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {steg.map((s, i) => (
+          <Reveal key={s.n} delay={(i % 4) * 90} className="h-full">
+            <article className="dm-card group flex h-full flex-col rounded-dm border-t-4 border-dm-primaryLight bg-white p-6 shadow-dm transition-colors hover:border-dm-accent">
               <span
-                className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-dm-primary font-heading text-lg font-bold text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-dm-accent group-hover:text-dm-primary"
+                className="mb-4 flex h-11 w-11 flex-none items-center justify-center rounded-full bg-dm-primary font-heading text-lg font-bold text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-dm-accent group-hover:text-dm-primary"
                 aria-hidden
               >
                 {s.n}
               </span>
-              <div>
-                <h3 className="text-dm-h4 text-dm-heading">{s.tittel}</h3>
-                <p className="mt-1 text-dm-text">{s.tekst}</p>
-              </div>
-            </Reveal>
-          ))}
-        </ol>
-
-        <Reveal className="group order-first overflow-hidden rounded-dm shadow-dm lg:order-last">
-          <Image
-            src="/img/slik-fungerer.jpg"
-            alt="Arild Pedersen leder et SpeedMeeting med deltakere rundt bordet"
-            width={1200}
-            height={900}
-            sizes="(max-width: 1024px) 100vw, 560px"
-            className="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          />
-        </Reveal>
+              <h3 className="text-dm-h4 text-dm-heading">{s.tittel}</h3>
+              <p className="mt-2 text-dm-text">{s.tekst}</p>
+            </article>
+          </Reveal>
+        ))}
       </div>
     </Section>
   )

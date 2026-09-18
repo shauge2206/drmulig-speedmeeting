@@ -1,40 +1,49 @@
 import { Section, SectionHeading } from './Section'
 import { FaqItem } from './FaqItem'
-import { prisEksMva, prisInkMva, NESTE_TREFF } from '@/lib/config'
+import {
+  EVENT,
+  prisEksMva,
+  prisInkMva,
+  formaterDato,
+  formaterKlokke,
+} from '@/lib/config'
 
-// Servering (kaffe/frokost fra kl. 08.00) er ikke avklart, og er derfor bevisst
-// utelatt her. Legg til et spørsmål når Arild har bestemt det. Se lib/config UAVKLART.
+const dato = formaterDato(EVENT.starts_at)
+const fra = formaterKlokke(EVENT.starts_at)
+const til = formaterKlokke(EVENT.ends_at)
+
+// Servering er ikke bekreftet ut over kaffe, og er derfor ikke et eget spørsmål.
 const sporsmaal = [
   {
     q: 'Hvordan foregår møtene?',
-    a: 'Som speed-dating for bedrifter. Du møter én bedrift av gangen, ansikt til ansikt. Dere pitcher 2,5 minutter hver, så bytter dere til neste på lista. Ingen scene og ingen sal, bare korte samtaler, en og en.',
+    a: 'Som speed-dating for bedrifter. Du møter én bedrift av gangen. Dere pitcher tre minutter hver, bruker ett minutt på oppsummering og går videre til neste møte.',
+  },
+  {
+    q: 'Hvor og når møtes vi?',
+    a: `${kapitaliser(dato)} kl. ${fra} til ${til} hos ${EVENT.venue}.`,
+  },
+  {
+    q: 'Hvor mange kan delta?',
+    a: `Det er maks ${EVENT.capacity} plasser. Hver deltaker kan møte opptil 21 andre bedrifter i løpet av arrangementet.`,
   },
   {
     q: 'Kan jeg sende en kollega i mitt sted?',
-    a: 'Ja. Plassen er knyttet til bedriften, ikke til en enkeltperson. Gi oss beskjed om hvem som kommer.',
-  },
-  {
-    q: 'Hva om jeg ikke kan denne måneden?',
-    a: `Treffet er månedlig, første tirsdag i måneden. Rekker du ikke oktober, er neste treff ${NESTE_TREFF[0].dato}.`,
-  },
-  {
-    q: 'Er det mva på prisen?',
-    a: `Ja. Prisen er ${prisEksMva} kr eks. mva, som blir ${prisInkMva} kr inkl. mva per plass.`,
+    a: 'Ja. Gi beskjed om hvem som kommer, slik at deltakerlisten blir riktig.',
   },
   {
     q: 'Får jeg deltakerlisten?',
-    a: 'Ja, hvis du samtykker til å dele navn, bedrift og e-post med de andre. Listen sendes ut kort tid etter treffet, så du kan følge opp mens praten er fersk.',
+    a: 'Ja, der deltakerne har samtykket til deling av navn, bedrift og kontaktinformasjon. Listen sendes ut kort tid etter treffet.',
   },
   {
-    q: 'Hvordan betaler jeg?',
-    a: 'Direkte i Stripes sikre kasse når du klikker Kjøp plass. Du får kvittering på e-post med en gang.',
+    q: 'Hva koster det?',
+    a: `${prisEksMva} kroner per person eks. mva. (${prisInkMva} kroner inkl. mva.).`,
   },
 ]
 
 export function Faq() {
   return (
     <Section variant="subtle" id="faq">
-      <SectionHeading eyebrow="Ofte stilte spørsmål" title="Godt å vite" />
+      <SectionHeading eyebrow="Ofte stilte spørsmål" title="Godt å vite." />
       <div className="mx-auto mt-10 max-w-dm-narrow divide-y divide-black/10 rounded-dm bg-white px-6 shadow-dm">
         {sporsmaal.map((s) => (
           <FaqItem key={s.q} q={s.q} a={s.a} />
@@ -42,4 +51,8 @@ export function Faq() {
       </div>
     </Section>
   )
+}
+
+function kapitaliser(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
