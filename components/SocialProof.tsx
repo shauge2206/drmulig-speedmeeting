@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Section } from './Section'
+import { Section, SectionHeading } from './Section'
 import { Reveal } from './Reveal'
 
 // Verbatim kortreferanser fra 01-KLIENT-PROFIL.md seksjon 7.
@@ -48,7 +48,11 @@ function Stjerner() {
 export function SocialProof() {
   return (
     <Section variant="subtle">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <SectionHeading
+        eyebrow="Referanser"
+        title="Dette sier de som har jobbet med Arild."
+      />
+      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {attester.map((a, i) => (
           <Reveal key={a.navn} delay={i * 90} className="h-full">
             <figure className="dm-card flex h-full flex-col rounded-dm bg-white p-6 shadow-dm">

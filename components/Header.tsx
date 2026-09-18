@@ -2,12 +2,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { KjopKnapp } from './status/KjopKnapp'
 
-// Enkel topplinje: DrMulig-logo til venstre, KJOEP PLASS til hoeyre.
-// Ingen full meny. Dette er en landingsside med ett maal.
+// Topplinje som i referansen: logo til venstre, ankermeny i midten/hoeyre og
+// en tydelig KJOEP PLASS-knapp ytterst. Menyen skjules paa smaa skjermer.
+const lenker = [
+  { href: '#slik-fungerer', tekst: 'Slik fungerer det' },
+  { href: '#bilder', tekst: 'Bilder' },
+  { href: '#pris', tekst: 'Pris' },
+]
+
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-dm items-center justify-between px-5 py-3 md:px-8">
+      <div className="mx-auto flex w-full max-w-dm items-center justify-between gap-6 px-5 py-3 md:px-8">
         <Link href="/" aria-label="DrMulig forside" className="flex items-center">
           <Image
             src="/img/logoer/drmulig-sort.png"
@@ -20,7 +26,23 @@ export function Header() {
             style={{ borderRadius: 0 }}
           />
         </Link>
-        <KjopKnapp className="!px-5 !py-3 text-sm md:!px-7" />
+
+        <nav
+          aria-label="Hovedmeny"
+          className="hidden items-center gap-8 md:flex"
+        >
+          {lenker.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-sm font-medium text-dm-primary transition-colors hover:text-dm-primaryLight"
+            >
+              {l.tekst}
+            </a>
+          ))}
+        </nav>
+
+        <KjopKnapp label="Sikre plassen" className="!px-5 !py-3 text-sm md:!px-7" />
       </div>
     </header>
   )

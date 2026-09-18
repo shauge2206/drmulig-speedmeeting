@@ -2,23 +2,23 @@ import Image from 'next/image'
 import { Section, SectionHeading } from './Section'
 import { Reveal } from './Reveal'
 
-// Bilder fra treffet 20. mars 2026. Alle sett og verifisert som ekte.
+// Bilder fra tidligere SpeedMeeting på Regus Kokstad.
 const bilder = [
-  { src: '/img/galleri/g1.jpg', alt: 'Deltakere samlet rundt bordet under et SpeedMeeting' },
-  { src: '/img/galleri/g2.jpg', alt: 'Arild Pedersen presenterer for rommet' },
-  { src: '/img/galleri/g3.jpg', alt: 'Arild leder treffet foran deltakerne' },
-  { src: '/img/galleri/g4.jpg', alt: 'Gruppebilde av deltakerne på scenen' },
-  { src: '/img/galleri/g5.jpg', alt: 'Deltakerne samlet på scenen med konfetti i lufta' },
-  { src: '/img/galleri/g6.jpg', alt: 'Deltakerne samlet til felles bilde' },
+  { src: '/img/sm/g1.jpg', alt: 'Deltakere i flere parallelle SpeedMeeting-samtaler på Regus Kokstad' },
+  { src: '/img/sm/g2.jpg', alt: 'Bedrifter i SpeedMeeting-samtaler rundt bord' },
+  { src: '/img/sm/g3.jpg', alt: 'Deltakere i samtale ved et bord' },
+  { src: '/img/sm/g4.jpg', alt: 'Deltakere i nettverkssamtale' },
+  { src: '/img/sm/g5.jpg', alt: 'Arild Pedersen presenterer PSV for deltakerne' },
 ]
 
 export function Gallery() {
   return (
-    <Section variant="subtle" id="galleri">
+    <Section variant="dark" id="bilder">
       <SectionHeading
         eyebrow="Fra tidligere treff"
-        title="Ekte bedrifter, ekte møter"
-        intro="Et lite innblikk fra treffet i mars."
+        title="SpeedMeeting ser omtrent slik ut."
+        intro="Ekte mennesker, korte samtaler og mange bord i aktivitet samtidig."
+        invert
       />
       <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
         {bilder.map((b, i) => (
