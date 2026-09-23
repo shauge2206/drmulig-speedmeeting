@@ -96,7 +96,7 @@ export function Hero() {
                 <div className="mt-5">
                   <Countdown maalISO={EVENT.starts_at} variant="stor" />
                 </div>
-                <p className="mt-5 text-sm text-white/60">
+                <p className="mt-5 text-sm font-medium text-dm-accent">
                   {kapitaliser(dato)} · kl. {fra}
                 </p>
               </>
