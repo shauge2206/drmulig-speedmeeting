@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 // NB (Stian/Arild): denne erklaeringen daekker det siden faktisk gjoer i dag.
 // Kontroller foer lansering at (1) databehandleravtale er signert med Stripe,
 // Vercel og Upstash, (2) lagringstidene under stemmer med rutinene deres, og
-// (3) samtykke til deltakerliste/nyhetsbrev faktisk hentes i Stripe-kassen.
+// (3) samtykke til deltakerliste faktisk hentes i Stripe-kassen.
 export default function PersonvernPage() {
   return (
     <PageShell>
@@ -41,8 +41,8 @@ export default function PersonvernPage() {
             Betalingsopplysninger (håndteres av Stripe, vi ser aldri fullstendig kortnummer)
           </li>
           <li>
-            Svarene dine på de valgfrie feltene i kassen, for eksempel hva du vil pitche,
-            samtykke til deltakerliste og samtykke til nyhetsbrev
+            Svarene dine på de valgfrie feltene i kassen, for eksempel hva du vil pitche, og
+            samtykke til deltakerliste
           </li>
         </ul>
         <p>
@@ -62,8 +62,8 @@ export default function PersonvernPage() {
             forpliktelse (art. 6 nr. 1 c).
           </li>
           <li>
-            <strong>Dele deltakerliste og sende nyhetsbrev</strong> - kun basert på ditt
-            samtykke (art. 6 nr. 1 a), som du når som helst kan trekke tilbake.
+            <strong>Dele deltakerliste</strong> - kun basert på ditt samtykke (art. 6 nr. 1
+            a), som du når som helst kan trekke tilbake.
           </li>
           <li>
             <strong>Enkel, anonym besøksstatistikk</strong> - berettiget interesse i å
@@ -107,8 +107,8 @@ export default function PersonvernPage() {
         <h2 className="text-dm-h4">Lagringstid</h2>
         <p>
           Betalings- og bokføringsopplysninger oppbevares så lenge bokføringsloven krever,
-          normalt fem år. Deltakerlister og markedsføringssamtykker beholdes så lenge de er
-          nødvendige for formålet, og slettes når du trekker samtykket eller ber om det.
+          normalt fem år. Deltakerlister beholdes så lenge de er nødvendige for formålet, og
+          slettes når du trekker samtykket eller ber om det.
         </p>
 
         <h2 className="text-dm-h4">Dine rettigheter</h2>
