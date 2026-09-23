@@ -66,6 +66,7 @@ export function Pricing() {
 
           {/* Høyre: dato, sted og kjøpsknapp */}
           <aside className="flex flex-col justify-center gap-4 border-t border-black/10 bg-dm-subtle p-8 md:border-l md:border-t-0 md:p-10">
+            <p className="dm-eyebrow mb-1 text-dm-primaryLight">Neste møte</p>
             <h3 className="text-dm-h5 text-dm-heading">{kapitaliser(dato)}</h3>
             <p className="text-dm-text">
               <strong>

@@ -15,8 +15,8 @@ export function FinalCta() {
       <Reveal className="mx-auto max-w-dm-narrow text-center">
         <h2 className="text-white">Klar for møteaktivitet på høy oktan?</h2>
         <p className="mx-auto mt-4 max-w-xl text-lg text-white/85">
-          {kapitaliser(dato)} kl. {fra} til {til} på {EVENT.venue}. Maks {EVENT.capacity}{' '}
-          plasser.
+          Neste møte: {kapitaliser(dato)} kl. {fra} til {til} på {EVENT.venue}. Maks{' '}
+          {EVENT.capacity} plasser.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3">
           <KjopKnapp label="Sikre plassen" />

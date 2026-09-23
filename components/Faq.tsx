@@ -1,32 +1,22 @@
 import { Section, SectionHeading } from './Section'
 import { FaqItem } from './FaqItem'
-import {
-  hentAktivtTreff,
-  prisEksMva,
-  prisInkMva,
-  formaterDato,
-  formaterKlokke,
-} from '@/lib/config'
+import { KAPASITET, prisEksMva, prisInkMva } from '@/lib/config'
 
-// Servering er ikke bekreftet ut over kaffe, og er derfor ikke et eget spørsmål.
+// Konkret dato/tid staar ikke her lenger. Neste moete med nedtelling ligger
+// oeverst paa siden; FAQ peker dit i stedet.
 export function Faq() {
-  const EVENT = hentAktivtTreff()
-  const dato = formaterDato(EVENT.starts_at)
-  const fra = formaterKlokke(EVENT.starts_at)
-  const til = formaterKlokke(EVENT.ends_at)
-
   const sporsmaal = [
     {
       q: 'Hvordan foregår møtene?',
       a: 'Som speed-dating for bedrifter. Du møter én bedrift av gangen. Dere pitcher tre minutter hver, bruker ett minutt på oppsummering og går videre til neste møte.',
     },
     {
-      q: 'Hvor og når møtes vi?',
-      a: `${kapitaliser(dato)} kl. ${fra} til ${til} hos ${EVENT.venue}.`,
+      q: 'Når og hvor ofte er det SpeedMeeting?',
+      a: 'Vi planlegger speed-dating-møter for bedrifter regelmessig. Følg med øverst på siden, der ligger alltid neste møte med dato og nedtelling.',
     },
     {
       q: 'Hvor mange kan delta?',
-      a: `Det er maks ${EVENT.capacity} plasser. Hver deltaker kan møte opptil 21 andre bedrifter i løpet av arrangementet.`,
+      a: `Det er maks ${KAPASITET} plasser. Hver deltaker kan møte opptil 21 andre bedrifter i løpet av arrangementet.`,
     },
     {
       q: 'Kan jeg sende en kollega i mitt sted?',
@@ -52,8 +42,4 @@ export function Faq() {
       </div>
     </Section>
   )
-}
-
-function kapitaliser(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1)
 }
