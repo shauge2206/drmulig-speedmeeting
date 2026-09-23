@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { KjopKnapp } from './status/KjopKnapp'
-import { Countdown } from './Countdown'
 import {
   hentAktivtTreff,
   harKommendeTreff,
@@ -24,20 +23,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur">
-      {/* Nedtellingsstripe: neste møte + live nedtelling. Uten kommende treff
-          vises plassholderen i stedet, uten nedtelling. */}
+      {/* Topp-stripe: neste møte-dato (selve nedtellingen er stor i hero). */}
       <div className="bg-dm-primary text-white">
-        <div className="mx-auto flex w-full max-w-dm flex-wrap items-center justify-center gap-x-2.5 gap-y-0.5 px-5 py-2 text-center text-sm md:px-8">
-          {kommende ? (
-            <>
-              <span className="font-medium">
-                Neste SpeedMeeting: {kapitaliser(dato)}
-              </span>
-              <Countdown maalISO={EVENT.starts_at} />
-            </>
-          ) : (
-            <span className="font-medium">{NESTE_MOETE_PLASSHOLDER}</span>
-          )}
+        <div className="mx-auto flex w-full max-w-dm items-center justify-center px-5 py-2 text-center text-sm md:px-8">
+          <span className="font-medium">
+            {kommende
+              ? `Neste SpeedMeeting: ${kapitaliser(dato)}`
+              : NESTE_MOETE_PLASSHOLDER}
+          </span>
         </div>
       </div>
 
