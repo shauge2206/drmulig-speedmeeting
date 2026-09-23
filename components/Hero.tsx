@@ -85,30 +85,29 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Høyre: stor nedtelling til neste møte */}
-          <div className="dm-hero-in" style={{ animationDelay: '0.45s' }}>
-            <div className="rounded-dm border border-white/15 bg-black/25 p-6 backdrop-blur md:p-8">
-              {kommende ? (
-                <>
-                  <p className="dm-eyebrow text-center text-dm-accent">
-                    Nedtelling til neste møte
-                  </p>
-                  <div className="mt-5">
-                    <Countdown maalISO={EVENT.starts_at} variant="stor" />
-                  </div>
-                  <p className="mt-5 text-center text-sm text-white/80">
-                    {kapitaliser(dato)} · kl. {fra}
-                  </p>
-                </>
-              ) : (
-                <div className="py-4 text-center">
-                  <p className="dm-eyebrow text-dm-accent">Neste møte</p>
-                  <p className="mt-2 font-heading text-2xl font-bold text-white">
-                    {NESTE_MOETE_PLASSHOLDER}
-                  </p>
+          {/* Høyre: stor, diskré nedtelling som flyter på hero-bakgrunnen */}
+          <div
+            className="dm-hero-in text-center lg:border-l lg:border-white/10 lg:pl-10"
+            style={{ animationDelay: '0.45s' }}
+          >
+            {kommende ? (
+              <>
+                <p className="dm-eyebrow text-white/60">Nedtelling til neste møte</p>
+                <div className="mt-5">
+                  <Countdown maalISO={EVENT.starts_at} variant="stor" />
                 </div>
-              )}
-            </div>
+                <p className="mt-5 text-sm text-white/60">
+                  {kapitaliser(dato)} · kl. {fra}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="dm-eyebrow text-white/60">Neste møte</p>
+                <p className="mt-2 font-heading text-2xl font-bold text-white">
+                  {NESTE_MOETE_PLASSHOLDER}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>

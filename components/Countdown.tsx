@@ -38,9 +38,7 @@ export function Countdown({
 
   if (variant === 'stor') {
     if (forbi) {
-      return (
-        <p className="font-heading text-3xl font-bold text-dm-accent">I gang nå</p>
-      )
+      return <p className="font-heading text-3xl font-bold text-white">I gang nå</p>
     }
     const enheter: [number, string][] = [
       [d, 'Dager'],
@@ -49,18 +47,20 @@ export function Countdown({
       [s, 'Sek'],
     ]
     return (
-      <div className="grid grid-cols-4 gap-2 sm:gap-3">
-        {enheter.map(([verdi, navn]) => (
+      <div className="flex items-stretch">
+        {enheter.map(([verdi, navn], i) => (
           <div
             key={navn}
-            className="rounded-dm border border-white/15 bg-white/10 px-1 py-3 text-center backdrop-blur"
+            className={`flex flex-1 flex-col items-center px-2 sm:px-3 ${
+              i > 0 ? 'border-l border-white/10' : ''
+            }`}
           >
-            <div className="font-heading text-4xl font-bold tabular-nums text-dm-accent sm:text-5xl">
+            <span className="font-heading text-4xl font-bold tabular-nums text-white sm:text-5xl">
               {String(verdi).padStart(2, '0')}
-            </div>
-            <div className="mt-1 text-[0.7rem] uppercase tracking-wide text-white/70">
+            </span>
+            <span className="mt-1.5 text-[0.7rem] uppercase tracking-wider text-white/45">
               {navn}
-            </div>
+            </span>
           </div>
         ))}
       </div>
