@@ -2,7 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { KjopKnapp } from './status/KjopKnapp'
 import { Countdown } from './Countdown'
-import { hentAktivtTreff, formaterDato } from '@/lib/config'
+import {
+  hentAktivtTreff,
+  harKommendeTreff,
+  formaterDato,
+  NESTE_MOETE_PLASSHOLDER,
+} from '@/lib/config'
 
 // Topplinje: en nedtellingsstripe med neste møte + live nedtelling øverst, og
 // under den logo, ankermeny og en tydelig KJOEP PLASS-knapp.
@@ -14,17 +19,25 @@ const lenker = [
 
 export function Header() {
   const EVENT = hentAktivtTreff()
+  const kommende = harKommendeTreff()
   const dato = formaterDato(EVENT.starts_at)
 
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur">
-      {/* Nedtellingsstripe: neste møte + live nedtelling */}
+      {/* Nedtellingsstripe: neste møte + live nedtelling. Uten kommende treff
+          vises plassholderen i stedet, uten nedtelling. */}
       <div className="bg-dm-primary text-white">
         <div className="mx-auto flex w-full max-w-dm flex-wrap items-center justify-center gap-x-2.5 gap-y-0.5 px-5 py-2 text-center text-sm md:px-8">
-          <span className="font-medium">
-            Neste SpeedMeeting: {kapitaliser(dato)}
-          </span>
-          <Countdown maalISO={EVENT.starts_at} />
+          {kommende ? (
+            <>
+              <span className="font-medium">
+                Neste SpeedMeeting: {kapitaliser(dato)}
+              </span>
+              <Countdown maalISO={EVENT.starts_at} />
+            </>
+          ) : (
+            <span className="font-medium">{NESTE_MOETE_PLASSHOLDER}</span>
+          )}
         </div>
       </div>
 

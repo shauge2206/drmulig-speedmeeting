@@ -66,6 +66,9 @@ export const TREFF_DATOER = [
 export const KAPASITET = TREFF_MAL.capacity
 export const STRIPE_URL = TREFF_MAL.stripe_payment_link_url
 export const UTSOLGT_MANUELL = TREFF_MAL.utsolgt_manuell
+
+// Vises naar alle datoer er passert og ingen ny er lagt inn ennaa.
+export const NESTE_MOETE_PLASSHOLDER = 'Neste møte planlegges'
 export const prisEksMva = Math.round(TREFF_MAL.price_ore / 100)
 export const prisInkMva = Math.round(
   (TREFF_MAL.price_ore * (1 + TREFF_MAL.vat_rate)) / 100,
@@ -126,6 +129,15 @@ export function hentAktivtTreff(naa: Date = new Date()): Treff {
   )
   const valgt = kommende ?? datoer[datoer.length - 1] ?? TREFF_DATOER[0]
   return byggTreff(valgt)
+}
+
+// Finnes det et kommende (ikke ferdig) treff? Naar dette er false, skal siden
+// vise plassholderen "Neste møte planlegges" i stedet for en passert dato.
+export function harKommendeTreff(naa: Date = new Date()): boolean {
+  const naaMs = naa.getTime()
+  return sorterteDatoer().some(
+    (d) => new Date(byggTreff(d).ends_at).getTime() > naaMs,
+  )
 }
 
 // Treff ETTER det aktive, til "neste treff"-melding naar noe er fullt.

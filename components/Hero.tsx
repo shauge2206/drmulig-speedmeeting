@@ -1,5 +1,12 @@
 import Image from 'next/image'
-import { hentAktivtTreff, formaterDato, formaterKlokke, prisEksMva } from '@/lib/config'
+import {
+  hentAktivtTreff,
+  harKommendeTreff,
+  formaterDato,
+  formaterKlokke,
+  prisEksMva,
+  NESTE_MOETE_PLASSHOLDER,
+} from '@/lib/config'
 import { KjopKnapp } from './status/KjopKnapp'
 
 // Fullbredde bakgrunnsbilde fra treffet, moerkt petrol-overlegg og stor
@@ -7,12 +14,13 @@ import { KjopKnapp } from './status/KjopKnapp'
 // slik referansen viser. Ken-burns paa bildet og fade-up paa teksten beholdes.
 export function Hero() {
   const EVENT = hentAktivtTreff()
+  const kommende = harKommendeTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)
 
   const piller = [
-    `Neste møte: ${kapitaliser(dato)}`,
+    kommende ? `Neste møte: ${kapitaliser(dato)}` : NESTE_MOETE_PLASSHOLDER,
     `Kl. ${fra} til ${til}`,
     EVENT.venue,
     `Maks ${EVENT.capacity} plasser`,

@@ -4,10 +4,12 @@ import { KjopKnapp } from './status/KjopKnapp'
 import { PlasserIgjen } from './status/PlasserIgjen'
 import {
   hentAktivtTreff,
+  harKommendeTreff,
   prisEksMva,
   prisInkMva,
   formaterDato,
   formaterKlokke,
+  NESTE_MOETE_PLASSHOLDER,
 } from '@/lib/config'
 
 const inkludert = [
@@ -19,6 +21,7 @@ const inkludert = [
 
 export function Pricing() {
   const EVENT = hentAktivtTreff()
+  const kommende = harKommendeTreff()
   const dato = formaterDato(EVENT.starts_at)
   const fra = formaterKlokke(EVENT.starts_at)
   const til = formaterKlokke(EVENT.ends_at)
@@ -67,7 +70,9 @@ export function Pricing() {
           {/* Høyre: dato, sted og kjøpsknapp */}
           <aside className="flex flex-col justify-center gap-4 border-t border-black/10 bg-dm-subtle p-8 md:border-l md:border-t-0 md:p-10">
             <p className="dm-eyebrow mb-1 text-dm-primaryLight">Neste møte</p>
-            <h3 className="text-dm-h5 text-dm-heading">{kapitaliser(dato)}</h3>
+            <h3 className="text-dm-h5 text-dm-heading">
+              {kommende ? kapitaliser(dato) : NESTE_MOETE_PLASSHOLDER}
+            </h3>
             <p className="text-dm-text">
               <strong>
                 Kl. {fra} til {til}
