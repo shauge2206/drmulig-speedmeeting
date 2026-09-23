@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Section, SectionHeading } from './Section'
 import { Reveal } from './Reveal'
 import { KjopKnapp } from './status/KjopKnapp'
@@ -89,6 +90,17 @@ export function Pricing() {
             <p className="text-sm text-dm-text/80">
               Navn, bedrift, e-post og telefon fyller du inn i Stripes sikre kasse. Du får
               kvittering på e-post med en gang.
+            </p>
+            <p className="mt-2 text-xs text-dm-text/70">
+              Ved kjøp godtar du våre{' '}
+              <Link className="underline hover:text-dm-primary" href="/vilkar">
+                vilkår
+              </Link>{' '}
+              og{' '}
+              <Link className="underline hover:text-dm-primary" href="/personvern">
+                personvernerklæring
+              </Link>
+              .
             </p>
           </aside>
         </div>
