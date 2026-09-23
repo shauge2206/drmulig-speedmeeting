@@ -1,9 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { KjopKnapp } from './status/KjopKnapp'
+import { Countdown } from './Countdown'
+import { hentAktivtTreff, formaterDato } from '@/lib/config'
 
-// Topplinje som i referansen: logo til venstre, ankermeny i midten/hoeyre og
-// en tydelig KJOEP PLASS-knapp ytterst. Menyen skjules paa smaa skjermer.
+// Topplinje: en nedtellingsstripe med neste møte + live nedtelling øverst, og
+// under den logo, ankermeny og en tydelig KJOEP PLASS-knapp.
 const lenker = [
   { href: '#slik-fungerer', tekst: 'Slik fungerer det' },
   { href: '#bilder', tekst: 'Bilder' },
@@ -11,8 +13,22 @@ const lenker = [
 ]
 
 export function Header() {
+  const EVENT = hentAktivtTreff()
+  const dato = formaterDato(EVENT.starts_at)
+
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/90 backdrop-blur">
+      {/* Nedtellingsstripe: neste møte + live nedtelling */}
+      <div className="bg-dm-primary text-white">
+        <div className="mx-auto flex w-full max-w-dm flex-wrap items-center justify-center gap-x-2.5 gap-y-0.5 px-5 py-2 text-center text-sm md:px-8">
+          <span className="font-medium">
+            Neste SpeedMeeting: {kapitaliser(dato)}
+          </span>
+          <Countdown maalISO={EVENT.starts_at} />
+        </div>
+      </div>
+
+      {/* Hovedrad */}
       <div className="mx-auto flex w-full max-w-dm items-center justify-between gap-6 px-5 py-3 md:px-8">
         <Link href="/" aria-label="DrMulig forside" className="flex items-center">
           <Image
@@ -27,10 +43,7 @@ export function Header() {
           />
         </Link>
 
-        <nav
-          aria-label="Hovedmeny"
-          className="hidden items-center gap-8 md:flex"
-        >
+        <nav aria-label="Hovedmeny" className="hidden items-center gap-8 md:flex">
           {lenker.map((l) => (
             <a
               key={l.href}
@@ -46,4 +59,8 @@ export function Header() {
       </div>
     </header>
   )
+}
+
+function kapitaliser(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }

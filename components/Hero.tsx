@@ -12,7 +12,7 @@ export function Hero() {
   const til = formaterKlokke(EVENT.ends_at)
 
   const piller = [
-    kapitaliser(dato),
+    `Neste møte: ${kapitaliser(dato)}`,
     `Kl. ${fra} til ${til}`,
     EVENT.venue,
     `Maks ${EVENT.capacity} plasser`,
