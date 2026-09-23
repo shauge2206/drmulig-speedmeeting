@@ -38,7 +38,7 @@ export function Countdown({
 
   if (variant === 'stor') {
     if (forbi) {
-      return <p className="font-heading text-3xl font-bold text-white">I gang nå</p>
+      return <p className="font-heading text-3xl font-bold text-dm-accent">I gang nå</p>
     }
     const enheter: [number, string][] = [
       [d, 'Dager'],
@@ -55,10 +55,10 @@ export function Countdown({
               i > 0 ? 'border-l border-white/10' : ''
             }`}
           >
-            <span className="font-heading text-4xl font-bold tabular-nums text-white sm:text-5xl">
+            <span className="font-heading text-4xl font-bold tabular-nums text-dm-accent sm:text-5xl">
               {String(verdi).padStart(2, '0')}
             </span>
-            <span className="mt-1.5 text-[0.7rem] uppercase tracking-wider text-white/45">
+            <span className="mt-1.5 text-[0.7rem] uppercase tracking-wider text-white/50">
               {navn}
             </span>
           </div>
